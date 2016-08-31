@@ -7,6 +7,6 @@ deployment:
     commands:
       - 'go get github.com/mitchellh/gox'
       - 'go get github.com/tcnksm/ghr'
-      - 'gox -osarch "linux/amd64 darwin/amd64 windows/amd64 windows/i386" -output "dist/{{.Dir}}_{{.OS}}_{{.Arch}}"'
+      - 'gox -osarch "linux/amd64 darwin/amd64 windows/amd64 windows/386" -output "dist/{{.Dir}}_{{.OS}}_{{.Arch}}"'
 #      - 'cp dotor.yml dist/dotor.yml'
       - 'ghr -t ${GITHUB_TOKEN} -u ${USERNAME} -r ${CIRCLE_PROJECT_REPONAME} --replace ${CIRCLE_TAG} dist/'
