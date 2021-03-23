@@ -5,12 +5,12 @@ on: [push, pull_request]
 jobs:
 
   build:
-    runs-on: ${{ matrix.os }}
+    name: Go ${{ matrix.go }} on ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        go: ['1.16', '1.15', '1.14']
-    name: Go ${{ matrix.go }} on ${{ matrix.os }}
+        go: ['1.16', '1.15']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
 
