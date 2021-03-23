@@ -2,16 +2,19 @@ package main
 
 import (
 	"fmt"
-
-	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
-var (
-	name = kingpin.Flag("name", "Name of you.").Default("NONAME").String()
-)
+func hello(name string) (int, error) {
+	fmt.Printf("Hello, %s!\n", name)
+
+	if name == "hen" {
+		return len(name), fmt.Errorf("%s", "okasii!")
+	}
+
+	return len(name), nil
+}
 
 func main() {
-	kingpin.Parse()
-
-	fmt.Printf("Hello, %s!\n", *name)
+	len, err := hello("hogehoge")
+	fmt.Printf("%d %#v\n", len, err)
 }
