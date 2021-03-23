@@ -1,11 +1,14 @@
-name: Go
+name: test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - '**'
+  pull_request: {}
 
 jobs:
-
   build:
-    name: Go ${{ matrix.go }} on ${{ matrix.os }}
+    name: Test ${{ matrix.go }} on ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
