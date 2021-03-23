@@ -23,6 +23,9 @@ show-version: $(GOBIN)/gobump
 $(GOBIN)/gobump:
 	@cd && go get github.com/x-motemen/gobump/cmd/gobump
 
+$(GOBIN)/ghch:
+	@cd && go get github.com/Songmu/ghch/cmd/ghch
+
 .PHONY: cross
 cross: $(GOBIN)/goxz
 	goxz -n $(BIN) -pv=v$(VERSION) -build-ldflags=$(BUILD_LDFLAGS) .
@@ -40,7 +43,7 @@ clean:
 	go clean
 
 .PHONY: bump
-bump: $(GOBIN)/gobump
+bump: $(GOBIN)/gobump $(GOBIN)/ghch
 ifneq ($(shell git status --porcelain),)
 	$(error git workspace is dirty)
 endif
@@ -48,6 +51,7 @@ ifneq ($(shell git rev-parse --abbrev-ref HEAD),master)
 	$(error current branch is not master)
 endif
 	@gobump up -w .
+	ghch -w -N "v$(VERSION)"
 	git commit -am "bump up version to $(VERSION)"
 	git tag "v$(VERSION)"
 	git push origin master
