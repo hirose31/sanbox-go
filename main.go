@@ -2,7 +2,14 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"runtime"
 )
+
+const name = "sandbox-go"
+const version = "1.3.0"
+
+var revision = "HEAD"
 
 func hello(name string) (int, error) {
 	fmt.Printf("Hello, %s!\n", name)
@@ -15,6 +22,10 @@ func hello(name string) (int, error) {
 }
 
 func main() {
+	if len(os.Args) >= 2 && os.Args[1] == "--version" {
+		fmt.Printf("%s %s (rev: %s/%s)\n", name, version, revision, runtime.Version())
+		return
+	}
 	len, err := hello("hogehoge")
 	fmt.Printf("%d %#v\n", len, err)
 }
