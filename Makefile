@@ -51,11 +51,11 @@ test: build ## test
 	go test -v ./...
 
 .PHONY: lint
-lint: ## run golint
+lint: $(GOBIN)/golint ## run golint
 	golint -set_exit_status ./...
 
 .PHONY: security
-security: ## run gosec
+security: $(GOBIN)/gosec ## run gosec
 	gosec ./...
 
 .PHONY: clean
