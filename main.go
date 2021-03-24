@@ -26,6 +26,7 @@ func main() {
 		fmt.Printf("%s %s (rev: %s/%s)\n", name, version, revision, runtime.Version())
 		return
 	}
+
 	len, err := hello("hogehoge")
 	fmt.Printf("%d %#v\n", len, err)
 }

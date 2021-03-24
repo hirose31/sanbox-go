@@ -5,19 +5,25 @@ BUILD_LDFLAGS := "-s -w -X main.revision=$(CURRENT_REVISION)"
 GOBIN ?= $(shell go env GOPATH)/bin
 export GO111MODULE=on
 
+.PHONY: help
+.DEFAULT_GOAL := help
+
+help:
+	@grep -h -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 .PHONY: all
-all: clean build
+all: clean build ## clean and build
 
 .PHONY: build
-build:
+build: ## build
 	go build -ldflags=$(BUILD_LDFLAGS) -o $(BIN) .
 
 .PHONY: install
-install:
+install: ## install
 	go install -ldflags=$(BUILD_LDFLAGS) .
 
 .PHONY: show-version
-show-version: $(GOBIN)/gobump
+show-version: $(GOBIN)/gobump ## show-version
 	@gobump show -r .
 
 $(GOBIN)/gobump:
@@ -26,24 +32,39 @@ $(GOBIN)/gobump:
 $(GOBIN)/ghch:
 	@cd && go get github.com/Songmu/ghch/cmd/ghch
 
+$(GOBIN)/golint:
+	@cd && go get golang.org/x/lint/golint
+
+$(GOBIN)/gosec:
+	@cd && go get github.com/securego/gosec/v2/cmd/gosec
+
 .PHONY: cross
-cross: $(GOBIN)/goxz
-	goxz -n $(BIN) -pv=v$(VERSION) -build-ldflags=$(BUILD_LDFLAGS) .
+cross: $(GOBIN)/goxz ## build for cross platforms
+	goxz -arch amd64,arm64 -os linux,darwin -n $(BIN) -pv=v$(VERSION) -build-ldflags=$(BUILD_LDFLAGS) .
+	goxz -arch amd64       -os windows      -n $(BIN) -pv=v$(VERSION) -build-ldflags=$(BUILD_LDFLAGS) .
 
 $(GOBIN)/goxz:
 	cd && go get github.com/Songmu/goxz/cmd/goxz
 
 .PHONY: test
-test: build
+test: build ## test
 	go test -v ./...
 
+.PHONY: lint
+lint: ## run golint
+	golint -set_exit_status ./...
+
+.PHONY: security
+security: ## run gosec
+	gosec ./...
+
 .PHONY: clean
-clean:
+clean: ## clean
 	rm -rf $(BIN) goxz
 	go clean
 
 .PHONY: bump
-bump: $(GOBIN)/gobump $(GOBIN)/ghch
+bump: $(GOBIN)/gobump $(GOBIN)/ghch ## release new version
 ifneq ($(shell git status --porcelain),)
 	$(error git workspace is dirty)
 endif
@@ -58,7 +79,7 @@ endif
 	git push origin "refs/tags/v$(VERSION)"
 
 .PHONY: upload
-upload: $(GOBIN)/ghr
+upload: $(GOBIN)/ghr ## upload
 	ghr "v$(VERSION)" goxz
 
 $(GOBIN)/ghr:

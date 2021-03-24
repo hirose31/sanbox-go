@@ -27,3 +27,30 @@ jobs:
 
       - name: Test
         run: go test -v ./...
+
+  lint:
+    name: golint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.16'
+
+      - name: Lint
+        run: make lint
+
+  security:
+    name: gosec
+    runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run Gosec Security Scanner
+        uses: securego/gosec@master
+        with:
+          args: './...'
