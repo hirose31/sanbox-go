@@ -7,7 +7,7 @@ import (
 )
 
 const name = "sandbox-go"
-const version = "1.4.1"
+const version = "1.4.2"
 
 var revision = "HEAD"
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## [v1.4.2](https://github.com/hirose31/sandbox-go/compare/v1.4.1...v1.4.2) (2023-02-20)
+
+
 ## [v1.4.1](https://github.com/hirose31/sandbox-go/compare/v1.4.0...v1.4.1) (2023-02-20)
 
 * Refine [#4](https://github.com/hirose31/sandbox-go/pull/4) ([hirose31](https://github.com/hirose31))
