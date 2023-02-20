@@ -34,6 +34,7 @@ test: deps ## test
 .PHONY: lint
 lint: devel-deps ## run golint and staticcheck
 	golint -set_exit_status ./...
+	# https://staticcheck.io/docs/checks
 	staticcheck -checks all ./...
 
 .PHONY: security
